@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rafgraph/spa-github-pages.git"
+    "url": "git+https://github.com/rafgraph/spa-github-pages"
   },
   "author": "Rafael Pedicini <rafael@rafgraph.dev>",
   "license": "MIT",

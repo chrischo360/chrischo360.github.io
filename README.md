@@ -2,7 +2,7 @@
 
 [Demo app][demoapp]
 
-This is a lightweight solution for deploying single page apps with [GitHub Pages][ghpagesoverview]. You can easily deploy a [React][react] single page app with [React Router][reactrouter] `<BrowserRouter />`, like the one in the [demo app][demoapp], or a single page app built with any frontend library or framework.
+This is a lightweight solution for deploying single page apps with [GitHub Pages][ghpagesoverview]. You can easily deploy a [React][react] single page app with [React Router][reactrouter] `<BrowserRouter />`, like the one in the [demo app][demoapp], or a single page app built with any frontend library or framework. Testing
 
 #### Why it's necessary
 

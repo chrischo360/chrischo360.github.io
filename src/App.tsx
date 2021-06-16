@@ -1,78 +1,70 @@
+import { Box, useColorModeValue, Flex } from '@chakra-ui/react';
 import * as React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { DarkModeButton } from './ui/DarkModeButton';
-import { GitHubIconLink } from './ui/GitHubIconLink';
-import { globalCss, styled } from './stitches.config';
-import { Home } from './components/Home';
-import { ExampleComponent } from './components/ExampleComponent';
-import { ExampleTwoDeepComponent } from './components/ExampleTwoDeepComponent';
-import { SitemapLinkGenerator } from './components/SitemapLinkGenerator';
-import { PageNotFound } from './components/PageNotFound';
-import { Breadcrumbs } from './components/Breadcrumbs';
-
-const AppContainer = styled('div', {
-  maxWidth: '540px',
-  padding: '12px 15px 25px',
-  margin: '0 auto',
-});
-
-const HeaderContainer = styled('header', {
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginBottom: '18px',
-});
-
-const H1 = styled('h1', {
-  fontSize: '26px',
-  marginRight: '16px',
-});
-
-const HeaderIconContainer = styled('span', {
-  width: '78px',
-  display: 'inline-flex',
-  justifyContent: 'space-between',
-  gap: '12px',
-});
-
-const BreadcrumbsNav = styled('nav', {
-  margin: '18px 0',
-});
+import { Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
+import NavigationBar from './components/NavigationBar';
+import { Home } from './pages/Home';
+import { Publications } from './pages/Publications';
+import { Join } from './pages/Join';
+import { Contact } from './pages/Contact';
+import { Alumni } from './pages/Alumni';
+import { CurrentMembers } from './pages/CurrentMembers';
+import { OngoingResearch } from './pages/OngoingResearch';
+import { PastResearch } from './pages/PastResearch';
+import { Presentations } from './pages/Presentations';
+import Footer from './components/Footer';
 
 export const App: React.VFC = () => {
-  globalCss();
-
   return (
-    <AppContainer>
-      <HeaderContainer>
-        <H1>Single Page Apps for GitHub Pages</H1>
-        <HeaderIconContainer>
-          <DarkModeButton />
-          <GitHubIconLink
-            href="https://github.com/rafgraph/spa-github-pages"
-            title="GitHub repository for SPA GitHub Pages"
-          />
-        </HeaderIconContainer>
-      </HeaderContainer>
+    <Box bg={useColorModeValue('white', 'black')} width="100%" height="100%">
+      <Flex
+        direction="column"
+        align="center"
+        margin="0 auto"
+        width="100%"
+        height="100%"
+        maxWidth="80%"
+        minHeight="100vh"
+        justifyContent="flex-start"
+      >
+        <NavigationBar />
 
-      <BreadcrumbsNav>
-        <Breadcrumbs />
-      </BreadcrumbsNav>
+        <Box flexGrow={1} width="100%" marginLeft="20px">
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/currentmembers">
+              <CurrentMembers />
+            </Route>
+            <Route path="/alumni">
+              <Alumni />
+            </Route>
+            <Route path="/ongoingresearch">
+              <OngoingResearch />
+            </Route>
+            <Route path="/pastresearch">
+              <PastResearch />
+            </Route>
+            <Route path="/presentations">
+              <Presentations />
+            </Route>
+            <Route path="/publications">
+              <Publications />
+            </Route>
+            <Route path="/join">
+              <Join />
+            </Route>
+            <Route path="/contact">
+              <Contact />
+            </Route>
+          </Switch>
+        </Box>
 
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/example" component={ExampleComponent} />
-        <Route
-          exact
-          path="/example/two-deep"
-          component={ExampleTwoDeepComponent}
-        />
-        <Route
-          exact
-          path="/sitemap-link-generator"
-          component={SitemapLinkGenerator}
-        />
-        <Route component={PageNotFound} />
-      </Switch>
-    </AppContainer>
+        <Flex display="column" alignItems="flex-end">
+          <Footer />
+        </Flex>
+      </Flex>
+    </Box>
   );
 };

@@ -23,7 +23,6 @@ export const App: React.VFC = () => {
         margin="0 auto"
         width="100%"
         height="100%"
-        maxWidth="80%"
         minHeight="100vh"
         justifyContent="flex-start"
       >
@@ -54,9 +53,6 @@ export const App: React.VFC = () => {
             </Route>
             <Route path="/join">
               <Join />
-            </Route>
-            <Route path="/contact">
-              <Contact />
             </Route>
           </Switch>
         </Box>

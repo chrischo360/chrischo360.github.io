@@ -6,11 +6,13 @@ import {
   Text,
   Heading,
   Image,
+  Flex,
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { Reacteroids } from '../components/asteroidGame/Reacteroids';
 import styled from 'styled-components';
 import { HighlightedProjectGrid } from '../components/HighlightedProjectGrid';
+import { Contact } from './Contact';
 
 // import { OldHomePage } from '../components/OldHomePage';
 
@@ -76,8 +78,11 @@ const StyledLink = styled.a`
 export const Home: React.VFC = () => {
   const { toggleColorMode } = useColorMode();
 
-  const canvasBG = useColorModeValue('#ffffff', '#000000');
+  const canvasBG = useColorModeValue('white', 'black');
   const itemColor = useColorModeValue('#000000', '#ffffff');
+  const color = useColorModeValue('white', 'black');
+
+  console.log('colorMode:,' + color);
 
   return (
     <Box bg={useColorModeValue('white', 'black')} width="100%">
@@ -100,15 +105,20 @@ export const Home: React.VFC = () => {
         </Heading>
       </HeroText>
       <Box>
-        <Reacteroids bgColor={canvasBG} itemColor={itemColor}></Reacteroids>
+        <Reacteroids
+          bgColor={canvasBG}
+          itemColor={itemColor}
+          colorMode={color}
+        ></Reacteroids>
       </Box>
+
       <Info>
         <b>INSTRUCTIONS</b>
         <p>
           Use [&larr;][&uarr;][&rarr;] to MOVE <br /> Use SPACEBAR to shoot{' '}
         </p>
       </Info>
-      <Box margin="0 auto" marginTop="70px" padding="0 30px 0 30px">
+      <Box margin="0 auto" marginTop="70px" maxWidth="80%">
         <Grid
           templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
           gridGap="23px"
@@ -276,13 +286,20 @@ export const Home: React.VFC = () => {
           <Heading gridColumn="1 / -1" mb="7px">
             Contact Us
           </Heading>
-          <Paragraph>
-            Feel free to contact us at{' '}
-            <StyledLink href="mailto:hicsail@bu.edu">hicsail@bu.edu</StyledLink>
-            .
-          </Paragraph>
-          {/* <div id="pattern_footer"></div> */}
+          <Box width="100%">
+            <Paragraph>
+              Feel free to contact us at{' '}
+              <StyledLink href="mailto:hicsail@bu.edu">
+                hicsail@bu.edu
+              </StyledLink>
+              .
+            </Paragraph>
+          </Box>
+          {/* {/* <div id="pattern_footer"></div> */}
         </Grid>
+        <div id="contact">
+          <Contact />
+        </div>
       </Box>
     </Box>
   );

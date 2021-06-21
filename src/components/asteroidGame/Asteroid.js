@@ -4,7 +4,6 @@ import { asteroidVertices, randomNumBetween } from './helpers';
 function randomColor() {
   let texttheme = ['#E0533B', '#EBB54A', '#94ED6B'];
   let color = texttheme[Math.floor(Math.random() * texttheme.length)];
-  // console.log(color);
 
   return color;
 }
@@ -13,15 +12,17 @@ export default class Asteroid {
   constructor(args) {
     this.position = args.position;
     this.velocity = {
-      x: 0.1,
-      y: 0.1,
-      // x: randomNumBetween(-1.5, 1.5),
-      // y: randomNumBetween(-1.5, 1.5),
+      // x: 0.1,
+      // y: 0.1,
+      x: randomNumBetween(-0.001, 0.001),
+      y: randomNumBetween(-0.001, 0.001),
     };
+    // this.rotation = 1;
+    // this.rotation = randomNumBetween(-1, 1);
     this.rotation = 0;
-    this.rotationSpeed = randomNumBetween(-0.001, 0.001);
+    // this.rotationSpeed = randomNumBetween(-0.001, 0.001);
     // this.rotationSpeed = randomNumBetween(-1, 1);
-    // this.rotationSpeed = 0;
+    this.rotationSpeed = 0;
 
     this.radius = args.size;
     this.score = (80 / this.radius) * 5;
@@ -60,7 +61,8 @@ export default class Asteroid {
     }
 
     // Break into smaller asteroids
-    if (this.radius > 10) {
+    // if (this.radius > 10) {
+    if (this.radius > 30) {
       for (let i = 0; i < 2; i++) {
         let asteroid = new Asteroid({
           size: this.radius / 2,
@@ -90,6 +92,8 @@ export default class Asteroid {
       this.rotation += 360;
     }
 
+    // this.rotation += randomNumBetween(-360, 360);
+
     // Screen edges
     if (this.position.x > state.screen.width + this.radius)
       this.position.x = -this.radius;
@@ -107,9 +111,7 @@ export default class Asteroid {
     context.rotate((this.rotation * Math.PI) / 180);
 
     //Color Style
-    console.log('color:', this.color);
     context.strokeStyle = this.color;
-    // context.strokeStyle = 'blue';
     context.lineWidth = 2;
     context.beginPath();
     context.moveTo(0, -this.radius);

@@ -24,6 +24,7 @@ import {
 import * as React from 'react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import ToggleColorButton from '../ui/ToggleColorButton';
+import { HashLink } from 'react-router-hash-link';
 
 const texttheme = ['#E0533B', '#EBB54A', '#94ED6B'];
 
@@ -31,7 +32,7 @@ export default function NavigationBar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Flex width="100%" marginTop="30px" marginBottom="30px">
+    <Flex width="100%" marginTop="30px" marginBottom="30px" maxWidth="80%">
       <Flex
         width="100%"
         bg={useColorModeValue('white', 'black')}
@@ -65,18 +66,14 @@ export default function NavigationBar() {
           width="100%"
           marginLeft="0px"
         >
-          {/* <Box boxSize="30px" objectFit="cover" marginRight="10px">
-            <Image src="../../img/s_logo.png" />
-          </Box> */}
           <Flex
-            // textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
             display="flex"
             alignItems="center"
             fontWeight="normal"
             lineHeight="50px"
-            fontSize="2em"
+            // fontSize="2em"
           >
             <Box
               boxSize="30px"
@@ -86,8 +83,9 @@ export default function NavigationBar() {
             >
               <Image src="../../img/s_logo.png" />
             </Box>
-            <Text>SAIL</Text>
-            {/* SAIL */}
+            <Text fontSize={'2rem'} fontFamily="Karbon" fontWeight={500}>
+              SAIL
+            </Text>
           </Flex>
 
           <Flex
@@ -118,14 +116,31 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
+              {/* {navItem.hash ? (
+                <HashLink
+                  to={navItem.href}
+                  // p={2}
+                  // href={navItem.href ?? '#'}
+                  fontSize={'1.5rem'}
+                  fontFamily="Karbon"
+                  fontWeight={500}
+                  color={useColorModeValue('gray.600', 'gray.200')}
+                  _hover={{
+                    color:
+                      texttheme[Math.floor(Math.random() * texttheme.length)],
+                    textDecoration: 'none',
+                  }}
+                >
+                  {navItem.label}
+                </HashLink>
+              ) : ( */}
               <Link
-                as={ReactRouterLink}
+                as={navItem.hash ? HashLink : ReactRouterLink}
                 to={navItem.href}
                 p={2}
                 href={navItem.href ?? '#'}
-                fontSize={'20px'}
+                fontSize={'1.5rem'}
                 fontFamily="Karbon"
-                // fontHeight="20px"
                 fontWeight={500}
                 color={useColorModeValue('gray.600', 'gray.200')}
                 _hover={{
@@ -137,6 +152,7 @@ const DesktopNav = () => {
               >
                 {navItem.label}
               </Link>
+              {/* )} */}
             </PopoverTrigger>
 
             {navItem.children && (
@@ -184,7 +200,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           >
             {label}
           </Text>
-          <Text fontSize={'sm'}>{subLabel}</Text>
+          <Text fontSize={'1rem'}>{subLabel}</Text>
         </Box>
         <Flex
           transition={'all .3s ease'}
@@ -275,30 +291,36 @@ interface NavItem {
   subLabel?: string;
   children?: Array<NavItem>;
   href: string;
+  hash?: boolean;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'HOME',
     href: '/',
+    hash: false,
   },
   {
     label: 'PEOPLE',
     href: '#',
+    hash: false,
     children: [
       {
         label: 'Current Members',
         href: '/currentMembers',
+        hash: false,
       },
       {
         label: 'Alumni',
         href: 'alumni',
+        hash: false,
       },
     ],
   },
   {
     label: 'RESEARCH',
     href: '#',
+    hash: false,
     children: [
       {
         label: 'Ongoing',
@@ -313,6 +335,7 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'PUBLICATIONS',
     href: '#',
+    hash: false,
     children: [
       {
         label: 'Presentations',
@@ -327,10 +350,12 @@ const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'JOIN',
     href: '/join',
+    hash: false,
   },
   {
     label: 'CONTACT',
-    href: '/contact',
+    href: '/#contact',
+    hash: true,
   },
 ];
 function random(arg0: number, arg1: number): number {

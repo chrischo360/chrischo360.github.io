@@ -8,20 +8,38 @@
  */
 export function asteroidVertices(count, rad) {
   let p = [];
+
+  // if (count == 3) {
+  //   // for (let i = 0; i < count; i++) {
+  //   p[0] = {
+  //     x: -1,
+  //     y: 1,
+  //   };
+  //   p[1] = {
+  //     x: 1,
+  //     y: -1,
+  //   };
+  //   p[2] = {
+  //     x: 2,
+  //     y: 2,
+  //   };
+  // } else {
   for (let i = 0; i < count; i++) {
     p[i] = {
       x:
         -(
           Math.sin(((360 / count) * i * Math.PI) / 180) +
-          (Math.round(Math.random() * 2 - 1) * Math.random()) / 3
+          (Math.round(0.5 * 2 - 1) * 0.5) / 3
         ) * rad,
       y:
         -(
           Math.cos(((360 / count) * i * Math.PI) / 180) +
-          (Math.round(Math.random() * 2 - 1) * Math.random()) / 3
+          (Math.round(0.5 * 2 - 1) * 0.5) / 3
         ) * rad,
     };
   }
+  // }
+
   return p;
 }
 

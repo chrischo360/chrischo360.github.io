@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Ship from './Ship';
 import Asteroid from './Asteroid';
 import { randomNumBetweenExcluding } from './helpers';
-import { useColorMode, useColorModeValue } from '@chakra-ui/react';
 
 const KEY = {
   LEFT: 37,
@@ -31,20 +30,16 @@ export class Reacteroids extends Component {
         down: 0,
         space: 0,
       },
-      asteroidCount: 20,
-      currentScore: 0,
+      asteroidCount: 10,
+      currentSore: 0,
       topScore: localStorage['topscore'] || 0,
       inGame: false,
-      // colorMode:
-      // bgColor = this.props.bgColor,
-      // itemColor = this.props.itemColor,
+      colorMode: 'white',
     };
     this.ship = [];
     this.asteroids = [];
     this.bullets = [];
     this.particles = [];
-    // this.bgColor = args.bgColor;
-    // this.itemColor = args.bgColor;
   }
 
   handleResize(value, e) {
@@ -62,13 +57,28 @@ export class Reacteroids extends Component {
     if (e.keyCode === KEY.LEFT || e.keyCode === KEY.A) keys.left = value;
     if (e.keyCode === KEY.RIGHT || e.keyCode === KEY.D) keys.right = value;
     if (e.keyCode === KEY.UP || e.keyCode === KEY.W) keys.up = value;
-    if (e.keyCode === KEY.SPACE) keys.space = value;
+    if (e.keyCode === KEY.SPACE && e.target == document.body)
+      keys.space = value;
     this.setState({
       keys: keys,
     });
   }
 
   componentDidMount() {
+    window.addEventListener(
+      'keydown',
+      function (e) {
+        if (
+          ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(
+            e.code,
+          ) > -1
+        ) {
+          e.preventDefault();
+        }
+      },
+      false,
+    );
+
     window.addEventListener('keyup', this.handleKeys.bind(this, false));
     window.addEventListener('keydown', this.handleKeys.bind(this, true));
     window.addEventListener('resize', this.handleResize.bind(this, false));
@@ -80,15 +90,6 @@ export class Reacteroids extends Component {
       this.update();
     });
   }
-
-  // componentDidUpdate() {
-  //   this.setState({
-  //     bgColor: this.props,
-  //     bgColor,
-  //     itemColor: this.props.itemColor,
-  //   });
-  //   // this.ship.updateColor(this.bgColor, this.itemColor);
-  // }
 
   componentWillUnmount() {
     window.removeEventListener('keyup', this.handleKeys);
@@ -104,8 +105,14 @@ export class Reacteroids extends Component {
     context.save();
     context.scale(this.state.screen.ratio, this.state.screen.ratio);
 
-    context.fillStyle = this.props.bgColor;
-    // ship.updateColor(this.bgColor, this.itemColor);
+    this.state.colorMode = this.props.colorMode;
+
+    if (this.state.colorMode == 'white') {
+      context.fillStyle = '#FFFFFF';
+    } else {
+      context.fillStyle = '#000000';
+    }
+
     context.globalAlpha = 0.4;
     context.fillRect(0, 0, this.state.screen.width, this.state.screen.height);
     context.globalAlpha = 1;
@@ -157,8 +164,6 @@ export class Reacteroids extends Component {
       },
       create: this.createObject.bind(this),
       onDie: this.gameOver.bind(this),
-      itemColor: this.props.itemColor,
-      bgColor: this.props.bgColor,
     });
     this.createObject(ship, 'ship');
 
@@ -179,6 +184,8 @@ export class Reacteroids extends Component {
       });
       localStorage['topscore'] = this.state.currentScore;
     }
+
+    this.startGame();
   }
 
   generateAsteroids(howMany) {
@@ -264,28 +271,49 @@ export class Reacteroids extends Component {
 
     if (!this.state.inGame) {
       endgame = (
-        <div className="endgame">
-          <p>Game over, man!</p>
-          <p>{message}</p>
-          <button onClick={this.startGame.bind(this)}>try again?</button>
+        <div>
+          <button
+            style={{
+              // backgroundColor: 'transparent',
+              color: this.state.colorMode == 'white' ? '#000000' : '#FFFFFF',
+              fontSize: '1.5rem',
+              padding: '10px 20px',
+              margin: '10px',
+              fontFamily: 'PT Mono, serif',
+              cursor: 'pointer',
+              width: '100%',
+              textAlign: 'center',
+              // border: '5px solid black',
+            }}
+            onClick={this.startGame.bind(this)}
+          >
+            Try Again?
+          </button>
         </div>
       );
     }
 
     return (
       <div>
+        <div
+          style={{
+            fontSize: '1.5rem',
+            width: '100%',
+            textAlign: 'center',
+          }}
+        >
+          Score: {this.state.currentScore}
+        </div>
         {/* {endgame} */}
-        {/* <span className="score current-score" >Score: {this.state.currentScore}</span>
-        <span className="score top-score" >Top Score: {this.state.topScore}</span>
-        <span className="controls" >
-          Use [A][S][W][D] or [←][↑][↓][→] to MOVE<br/>
-          Use [SPACE] to SHOOT
-        </span> */}
         <canvas
           ref="canvas"
           width={this.state.screen.width * this.state.screen.ratio}
           height={this.state.screen.height * this.state.screen.ratio}
           background-color="red"
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
         />
       </div>
     );

@@ -25,7 +25,7 @@ export default class Asteroid {
     this.rotationSpeed = 0;
 
     this.radius = args.size;
-    this.score = (80 / this.radius) * 5;
+    this.score = Math.round((80 / this.radius) * 5);
     this.create = args.create;
     this.addScore = args.addScore;
     this.vertices = asteroidVertices(
@@ -114,7 +114,7 @@ export default class Asteroid {
     context.strokeStyle = this.color;
     context.lineWidth = 2;
     context.beginPath();
-    context.moveTo(0, -this.radius);
+    context.moveTo(-this.radius, -this.radius);
     for (let i = 1; i < this.vertices.length; i++) {
       context.lineTo(this.vertices[i].x, this.vertices[i].y);
     }

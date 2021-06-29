@@ -11,16 +11,10 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
   Image,
 } from '@chakra-ui/react';
-import {
-  HamburgerIcon,
-  CloseIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import * as React from 'react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import ToggleColorButton from '../ui/ToggleColorButton';
@@ -83,7 +77,7 @@ export default function NavigationBar() {
             >
               <Image src="../../img/s_logo.png" />
             </Box>
-            <Text fontSize={'2rem'} fontFamily="Karbon" fontWeight={500}>
+            <Text fontSize={'1.5rem'} fontFamily="Karbon" fontWeight={500}>
               SAIL
             </Text>
           </Flex>
@@ -139,7 +133,7 @@ const DesktopNav = () => {
                 to={navItem.href}
                 p={2}
                 href={navItem.href ?? '#'}
-                fontSize={'1.5rem'}
+                fontSize={'1.25rem'}
                 fontFamily="Karbon"
                 fontWeight={500}
                 color={useColorModeValue('gray.600', 'gray.200')}

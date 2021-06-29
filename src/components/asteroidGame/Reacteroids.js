@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Ship from './Ship';
 import Asteroid from './Asteroid';
-import { randomNumBetweenExcluding } from './helpers';
+import { randomNumBetween, randomNumBetweenExcluding } from './helpers';
 
 const KEY = {
   LEFT: 37,
@@ -32,7 +32,7 @@ export class Reacteroids extends Component {
       },
       asteroidCount: 10,
       currentSore: 0,
-      topScore: localStorage['topscore'] || 0,
+      top: localStorage['topscore'] || 0,
       inGame: false,
       colorMode: 'white',
     };
@@ -185,7 +185,7 @@ export class Reacteroids extends Component {
       localStorage['topscore'] = this.state.currentScore;
     }
 
-    this.startGame();
+    // this.startGame();
   }
 
   generateAsteroids(howMany) {
@@ -193,7 +193,7 @@ export class Reacteroids extends Component {
     let ship = this.ship[0];
     for (let i = 0; i < howMany; i++) {
       let asteroid = new Asteroid({
-        size: 80,
+        size: randomNumBetween(40, 80),
         position: {
           x: randomNumBetweenExcluding(
             0,
@@ -304,12 +304,11 @@ export class Reacteroids extends Component {
         >
           Score: {this.state.currentScore}
         </div>
-        {/* {endgame} */}
+        {endgame}
         <canvas
           ref="canvas"
           width={this.state.screen.width * this.state.screen.ratio}
           height={this.state.screen.height * this.state.screen.ratio}
-          background-color="red"
           style={{
             width: '100%',
             height: '100%',

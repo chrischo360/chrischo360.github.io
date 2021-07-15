@@ -1,45 +1,18 @@
-import {
-  Box,
-  Link,
-  Image,
-  Heading,
-  Text,
-  useColorModeValue,
-  Flex,
-} from '@chakra-ui/react';
+import { Box, Link, Image, Text, Flex } from '@chakra-ui/react';
 import * as React from 'react';
-import { PublicationInformation } from '../utils/researchInformation';
-import { Link as ReactRouterLink } from 'react-router-dom';
+import { PublicationInformation } from '../types/types';
 
 interface Props {
-  publicationTitle: string;
-  publicationHref: string;
-  publicationAuthors: string;
-  publicationProceeding?: string;
-  publicationLocation?: string;
-  publicationDate: string;
-  publicationLink?: string;
+  publication: PublicationInformation;
 }
 
-export const PublicationCard: React.FC<Props> = ({
-  publicationTitle,
-  publicationHref,
-  publicationAuthors,
-  publicationProceeding,
-  publicationLocation,
-  publicationDate,
-  publicationLink,
-}) => {
+export const PublicationCard: React.FC<Props> = ({ publication }) => {
   return (
-    <Flex
-      // borderBottom={useColorModeValue('2px solid black', '2px solid white')}
-      mt="1rem"
-      direction={['column', 'row']}
-    >
-      <Link href={publicationLink}>
+    <Flex mt="1rem" direction={['column', 'row']}>
+      <Link href={publication.link}>
         <Box mr="1rem" width="150px">
           <Image
-            src={publicationHref}
+            src={publication.href}
             width="100%"
             objectFit="cover"
             fallbackSrc="../../img/sail-image-placeholder.png"
@@ -53,15 +26,15 @@ export const PublicationCard: React.FC<Props> = ({
             mt="0px"
             pt="0px"
             fontSize="1.5rem"
-            href={publicationLink}
+            href={publication.link}
           >
-            {publicationTitle}
+            {publication.title}
           </Link>
         </Text>
-        <Text color="#EBB54A">{new Date(publicationDate).toDateString()}</Text>
+        <Text color="#EBB54A">{new Date(publication.date).toDateString()}</Text>
         <Text textStyle="paragraph">
-          {publicationAuthors}. Proccedings at {publicationProceeding}
-          {publicationLocation}
+          {publication.authors}. Proccedings at {publication.proceeding}
+          {publication.location}
         </Text>
       </Box>
     </Flex>

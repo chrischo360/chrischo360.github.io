@@ -17,7 +17,6 @@ export const ContactForm = () => {
   } = useForm();
   const onSubmit = (data: any) => console.log(data);
   console.log(errors);
-  // add mailing
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -49,7 +48,7 @@ export const ContactForm = () => {
         <Input type="text" {...register('Message', { required: true })} />
       </FormControl>
 
-      <Button mt={4} colorScheme="blackAlpha" type="submit">
+      <Button mt={4} colorScheme="teal" type="submit">
         Submit
       </Button>
     </form>

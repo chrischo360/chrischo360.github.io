@@ -38,7 +38,8 @@ export const CURRENTMEMBERS_LIST: Array<PersonInformation> = [
         href: 'https://github.com/DAMPLAB/OT2-SARS-CoV2',
       },
     ],
-    bio: 'Passionate about molecular biology and genetics research, Dany applies her full stack software expertise to domains such as synthetic biology, neuroscience, bioinformatics, and infectious disease. Dany is concurrently pursing a MS in Biology at Boston University',
+    bio:
+      'Passionate about molecular biology and genetics research, Dany applies her full stack software expertise to domains such as synthetic biology, neuroscience, bioinformatics, and infectious disease. Dany is concurrently pursing a MS in Biology at Boston University',
   },
   {
     name: 'Arezoo Sadeghi',
@@ -79,7 +80,7 @@ export const CURRENTMEMBERS_LIST: Array<PersonInformation> = [
   },
   {
     name: 'Christopher Cho',
-    picture: '',
+    picture: '../../img/team/chris.jpg',
     role: 'Software Engineer Intern',
     research: '',
     outsideLinks: [],

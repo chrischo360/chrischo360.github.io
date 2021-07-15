@@ -1,6 +1,6 @@
-import { Box, Heading, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, useColorModeValue } from '@chakra-ui/react';
 import * as React from 'react';
-import { PublicationInformation } from '../utils/researchInformation';
+import { PublicationInformation } from '../types/types';
 import { Layout } from './Layout';
 import { PublicationCard } from './PublicationCard';
 
@@ -10,16 +10,6 @@ interface Props {
 }
 
 export const PublicationsGrid: React.FC<Props> = ({ title, list }: Props) => {
-  const [year, setYear] = React.useState(0);
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  //   const currentYear =
-
-  const getyear = (publication: PublicationInformation): number => {
-    const date = new Date(publication.date);
-    return date.getFullYear();
-  };
-
   return (
     <Layout title={title}>
       {list.map((publication: PublicationInformation) =>
@@ -30,27 +20,11 @@ export const PublicationsGrid: React.FC<Props> = ({ title, list }: Props) => {
             <Heading textStyle="h2" mt="10px">
               {new Date(publication.date).getFullYear()}
             </Heading>
-            <PublicationCard
-              publicationTitle={publication.title}
-              publicationHref={publication.href}
-              publicationAuthors={publication.authors}
-              publicationProceeding={publication.proceeding}
-              publicationLocation={publication.location}
-              publicationDate={publication.date}
-              publicationLink={publication.link}
-            />
+            <PublicationCard publication={publication} />
           </Box>
         ) : (
           <Box>
-            <PublicationCard
-              publicationTitle={publication.title}
-              publicationHref={publication.href}
-              publicationAuthors={publication.authors}
-              publicationProceeding={publication.proceeding}
-              publicationLocation={publication.location}
-              publicationDate={publication.date}
-              publicationLink={publication.link}
-            />
+            <PublicationCard publication={publication} />
           </Box>
         ),
       )}

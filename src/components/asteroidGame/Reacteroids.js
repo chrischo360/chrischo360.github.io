@@ -247,14 +247,13 @@ export class Reacteroids extends Component {
   checkCollision(obj1, obj2, item1Type) {
     if (item1Type === 'bullet') {
       return (
-        this.checkBulletTriangleCollision(obj1, obj2) |
+        this.checkBulletTriangleCollision(obj1, obj2) ||
         this.checkBulletSquareCollision(obj1, obj2)
       );
-    } else if (item1Type === 'ship') {
-      return (
-        this.checkAsteroidTriangleCollision(obj1, obj2) |
-        this.checkAsteroidSquareCollision(obj1, obj2)
-      );
+    } else if (obj2.vertices.length == 3 && item1Type === 'ship') {
+      return this.checkShipTriangleCollision(obj1, obj2);
+    } else if (obj2.vertices.length == 4 && item1Type === 'ship') {
+      return this.checkShipSquareCollision(obj1, obj2);
     }
   }
 
@@ -281,12 +280,12 @@ export class Reacteroids extends Component {
   }
 
   checkBulletSquareCollision(obj1, obj2) {
-    var bulletX = obj1.position.x;
-    var bulletY = obj1.position.y;
     var bottomLeftX = obj2.vertices[0].x;
     var bottomLeftY = obj2.vertices[0].y;
     var topRightX = obj2.vertices[2].x;
     var topRightY = obj2.vertices[2].y;
+    var bulletX = obj1.position.x;
+    var bulletY = obj1.position.y;
 
     if (
       bulletX > bottomLeftX &&
@@ -300,7 +299,7 @@ export class Reacteroids extends Component {
     return false;
   }
 
-  checkAsteroidTriangleCollision(object1, object2) {
+  checkShipTriangleCollision(object1, object2) {
     var t0 = this.convertObjectToTriangle(object1);
     var t1 = this.convertObjectToTriangle(object2);
 
@@ -318,14 +317,28 @@ export class Reacteroids extends Component {
     );
   }
 
-  checkAsteroidSquareCollision(obj1, obj2) {
-    var vx = obj1.position.x - obj2.position.x;
-    var vy = obj1.position.y - obj2.position.y;
-    var length = Math.sqrt(vx * vx + vy * vy);
-    if (length < obj1.radius + obj2.radius) {
-      return true;
-    }
-    return false;
+  checkShipSquareCollision(obj1, obj2) {
+    var t0 = this.convertObjectToTriangle(obj1);
+    var r1 = this.convertObjectToRectangle(obj2);
+
+    return (
+      this.doLinesIntersect(t0.a, t0.b, r1.a, r1.b) ||
+      this.doLinesIntersect(t0.a, t0.b, r1.b, r1.c) ||
+      this.doLinesIntersect(t0.a, t0.b, r1.c, r1.d) ||
+      this.doLinesIntersect(t0.a, t0.b, r1.d, r1.a) ||
+      this.doLinesIntersect(t0.b, t0.c, r1.a, r1.b) ||
+      this.doLinesIntersect(t0.b, t0.c, r1.b, r1.c) ||
+      this.doLinesIntersect(t0.b, t0.c, r1.c, r1.d) ||
+      this.doLinesIntersect(t0.b, t0.c, r1.d, r1.a) ||
+      this.doLinesIntersect(t0.c, t0.a, r1.a, r1.b) ||
+      this.doLinesIntersect(t0.c, t0.a, r1.b, r1.c) ||
+      this.doLinesIntersect(t0.c, t0.a, r1.c, r1.d) ||
+      this.doLinesIntersect(t0.c, t0.a, r1.d, r1.a) ||
+      this.isPointInTriangle(r1.a, t0) ||
+      this.isPointInTriangle(r1.b, t0) ||
+      this.isPointInTriangle(r1.c, t0) ||
+      this.isPointInTriangle(r1.d, t0)
+    );
   }
 
   doLinesIntersect(a1, a2, a3, a4) {
@@ -382,6 +395,29 @@ export class Reacteroids extends Component {
       c: {
         x: object.vertices[2].x + object.position.x,
         y: object.vertices[2].y + object.position.y,
+      },
+    };
+
+    return vertices;
+  }
+
+  convertObjectToRectangle(object) {
+    var vertices = {
+      a: {
+        x: object.vertices[0].x + object.position.x,
+        y: object.vertices[0].y + object.position.y,
+      },
+      b: {
+        x: object.vertices[1].x + object.position.x,
+        y: object.vertices[1].y + object.position.y,
+      },
+      c: {
+        x: object.vertices[2].x + object.position.x,
+        y: object.vertices[2].y + object.position.y,
+      },
+      d: {
+        x: object.vertices[3].x + object.position.x,
+        y: object.vertices[3].y + object.position.y,
       },
     };
 

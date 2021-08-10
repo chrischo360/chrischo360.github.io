@@ -1,16 +1,25 @@
 import {
   Box,
   Grid,
+  useDisclosure,
   useColorModeValue,
   Text,
   Heading,
   Link,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { Reacteroids } from '../components/asteroidGame/Reacteroids';
 import styled from 'styled-components';
 import { HighlightedProjectGrid } from '../components/HighlightedProjectGrid';
-import { Contact } from './Contact';
+import { useEffect } from 'react';
 
 const HeroText = styled.div`
   position: absolute;
@@ -22,23 +31,12 @@ const HeroText = styled.div`
   display: block;
 `;
 
-const Info = styled.div`
-  background-color: orange;
-  position: absolute;
-  top: 80vh;
-  right: 5vh;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 16px;
-  color: black;
-  padding: 5px 15px;
-  box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.25);
-`;
-
 const StyledLink = styled.a`
   color: #567dbd;
 `;
 
 export const Home: React.VFC = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const canvasBG = useColorModeValue('white', 'black');
   const itemColor = useColorModeValue('#000000', '#FFFFFF');
   const color = useColorModeValue('white', 'black');
@@ -62,16 +60,7 @@ export const Home: React.VFC = () => {
           bgColor={canvasBG}
           itemColor={itemColor}
           colorMode={color}
-        ></Reacteroids>
-      </Box>
-
-      <Box display={['none', 'initial']}>
-        <Info>
-          <b>INSTRUCTIONS</b>
-          <p>
-            Use [&larr;][&uarr;][&rarr;] to MOVE <br /> Use SPACEBAR to shoot{' '}
-          </p>
-        </Info>
+        />
       </Box>
       <Box margin="0 auto" maxWidth="80%">
         <Grid
@@ -83,13 +72,12 @@ export const Home: React.VFC = () => {
             base: `
             'heading heading' 
             'about about'
-            'info info' 
             'projects projects' 
             'projectgrid projectgrid' 
             'contact contact'`,
             md: `
-            'about about ...' 
-            'info info info' 
+            'heading heading heading' 
+            'about about ... '
             'projects projectgrid projectgrid' 
             'contact contact contact'`,
           }}
@@ -105,8 +93,26 @@ export const Home: React.VFC = () => {
               {' '}
               Where Academia Meets Application
             </Heading>
+            <Box justifyContent="center" overflow="hidden">
+              <Button onClick={onOpen}>Ready to launch? 🚀</Button>
+              <Modal isOpen={isOpen} onClose={onClose} autoFocus size="sm">
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Reacteroids!</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Reacteroids
+                      bgColor={canvasBG}
+                      itemColor={itemColor}
+                      colorMode={color}
+                      mobile={true}
+                    />
+                  </ModalBody>
+                </ModalContent>
+              </Modal>
+            </Box>
           </Box>
-          <Box gridArea="about">
+          <Box gridArea="about" marginBottom="2em">
             <Heading textStyle="h2">About</Heading>
             <Text textStyle="paragraph">
               The Software & Application Innovation Lab (SAIL) at the{' '}
@@ -126,9 +132,6 @@ export const Home: React.VFC = () => {
               </Link>
               .
             </Text>
-          </Box>
-
-          <Box gridArea="info" marginBottom="2em" fontSize="20px">
             <Text textStyle="paragraph">
               Across Boston University, the quality and the potential impact of
               research activities (as well as the success of both students and
@@ -169,20 +172,27 @@ export const Home: React.VFC = () => {
           </Box>
 
           <Box gridArea="projects">
-            <Heading textStyle="h2" mt="50px">
-              Projects
-            </Heading>
-            <Text textStyle="paragraph">
-              Ongoing projects focus on a wide range of topics and technologies,
-              from developing and deploying novel cybersecurity applications, to
-              prototyping and deploying smart-city services and platforms.
-            </Text>
-            <Text textStyle="paragraph">
-              SAIL is committed to promoting innovation, best practices, and
-              open source models within the research community. SAIL will learn
-              and help teach new technologies and techniques as determined by
-              the needs of any given project.
-            </Text>
+            <Box
+              position={{ sm: 'static', lg: 'sticky' }}
+              top="20px"
+              mb={{ lg: '30%' }}
+            >
+              <Heading textStyle="h2" mt="5'0px">
+                Featured Projects
+              </Heading>
+              <Text textStyle="paragraph">
+                Ongoing projects focus on a wide range of topics and
+                technologies, from developing and deploying novel cybersecurity
+                applications, to prototyping and deploying smart-city services
+                and platforms.
+              </Text>
+              <Text textStyle="paragraph">
+                SAIL is committed to promoting innovation, best practices, and
+                open source models within the research community. SAIL will
+                learn and help teach new technologies and techniques as
+                determined by the needs of any given project.
+              </Text>
+            </Box>
           </Box>
 
           <Box gridArea="projectgrid">

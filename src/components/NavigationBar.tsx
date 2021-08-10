@@ -26,7 +26,12 @@ export default function NavigationBar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Flex width="100%" marginTop="30px" marginBottom="30px" maxWidth="80%">
+    <Box
+      width="100%"
+      marginTop={{ lg: '30px', md: '15px' }}
+      marginBottom={{ lg: '30px', md: '15px' }}
+      maxWidth={{ lg: '80%', md: '90%' }}
+    >
       <Flex
         width="100%"
         minH={'60px'}
@@ -93,7 +98,7 @@ export default function NavigationBar() {
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
-    </Flex>
+    </Box>
   );
 }
 
@@ -105,24 +110,6 @@ const DesktopNav = () => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
-              {/* {navItem.hash ? (
-                <HashLink
-                  to={navItem.href}
-                  // p={2}
-                  // href={navItem.href ?? '#'}
-                  fontSize={'1.5rem'}
-                  fontFamily="Karbon"
-                  fontWeight={500}
-                  color={useColorModeValue('gray.600', 'gray.200')}
-                  _hover={{
-                    color:
-                      texttheme[Math.floor(Math.random() * texttheme.length)],
-                    textDecoration: 'none',
-                  }}
-                >
-                  {navItem.label}
-                </HashLink>
-              ) : ( */}
               <Link
                 as={navItem.hash ? HashLink : ReactRouterLink}
                 to={navItem.href}
@@ -131,27 +118,23 @@ const DesktopNav = () => {
                 fontSize={'1.25rem'}
                 fontFamily="Karbon"
                 fontWeight={500}
-                // color={useColorModeValue('gray.600', 'gray.200')}
                 _hover={{
                   color:
                     texttheme[Math.floor(Math.random() * texttheme.length)],
                   textDecoration: 'none',
                 }}
-                // color: useColorModeValue('gray.800', 'white'),
               >
                 {navItem.label}
               </Link>
-              {/* )} */}
             </PopoverTrigger>
 
             {navItem.children && (
               <PopoverContent
                 border="5px solid white"
-                // boxShadow={'xl'}
-                // bg={useColorModeValue('white', 'black')}
                 p={4}
                 rounded={'xl'}
                 minW={'sm'}
+                bg={useColorModeValue('white', '#121212')}
               >
                 <Stack>
                   {navItem.children.map((child) => (
@@ -175,7 +158,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
       display={'block'}
       p={2}
       rounded={'md'}
-      // _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
+      style={{ textDecoration: 'none' }}
     >
       <Stack direction={'row'} align={'center'}>
         <Box>
@@ -183,7 +166,6 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
             transition={'all .3s ease'}
             _groupHover={{
               color: texttheme[Math.floor(Math.random() * texttheme.length)],
-              // 'pink.400'
             }}
             fontWeight={500}
           >
@@ -199,9 +181,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           justify={'flex-end'}
           align={'center'}
           flex={1}
-        >
-          {/* <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} /> */}
-        </Flex>
+        ></Flex>
       </Stack>
     </Link>
   );
@@ -209,11 +189,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 
 const MobileNav = () => {
   return (
-    <Stack
-      // bg={useColorModeValue('white', 'black')}
-      p={4}
-      display={{ md: 'none' }}
-    >
+    <Stack p={4} display={{ md: 'none' }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -295,12 +271,12 @@ const NAV_ITEMS: Array<NavItem> = [
     hash: false,
     children: [
       {
-        label: 'Current Members',
+        label: 'CURRENT MEMBERS',
         href: '/currentMembers',
         hash: false,
       },
       {
-        label: 'Alumni',
+        label: 'ALUMNI',
         href: 'alumni',
         hash: false,
       },
@@ -310,16 +286,6 @@ const NAV_ITEMS: Array<NavItem> = [
     label: 'RESEARCH',
     href: '/research',
     hash: false,
-    // children: [
-    //   {
-    //     label: 'Ongoing',
-    //     href: 'ongoingresearch',
-    //   },
-    //   {
-    //     label: 'Past',
-    //     href: 'pastresearch',
-    //   },
-    // ],
   },
   {
     label: 'PUBLICATIONS',
@@ -327,12 +293,12 @@ const NAV_ITEMS: Array<NavItem> = [
     hash: false,
     children: [
       {
-        label: 'Presentations',
+        label: 'PRESENTATIONS',
         href: 'presentations',
       },
       {
-        label: 'Publications',
-        href: 'publications',
+        label: 'PUBLICATIONS',
+        href: 'Publications',
       },
     ],
   },
@@ -347,6 +313,3 @@ const NAV_ITEMS: Array<NavItem> = [
     hash: false,
   },
 ];
-function random(arg0: number, arg1: number): number {
-  throw new Error('Function not implemented.');
-}

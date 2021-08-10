@@ -12,5 +12,12 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["./src/**.*"],
+  "include": [
+    "./src/**.*",
+    "src/pages/Contact.tsx",
+    "src/pages/Home.tsx",
+    "src/utils/data.tsx",
+    "src/utils/fonts.tsx",
+    "src/utils/theme.ts"
+  ]
 }

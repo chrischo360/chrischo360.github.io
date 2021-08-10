@@ -21,11 +21,11 @@ export function asteroidVertices(count, rad) {
           y: rad,
         };
         p[1] = {
-          x: rad,
-          y: rad,
+          x: -rad,
+          y: -rad,
         };
         p[2] = {
-          x: -rad,
+          x: rad,
           y: -rad,
         };
         break;
@@ -33,44 +33,46 @@ export function asteroidVertices(count, rad) {
       case 'topRight':
         p[0] = {
           x: rad,
-          y: rad,
+          y: -rad,
         };
         p[1] = {
-          x: rad,
+          x: -rad,
           y: -rad,
         };
         p[2] = {
-          x: -rad,
+          x: rad,
           y: rad,
         };
+
         break;
 
       case 'bottomLeft':
         p[0] = {
           x: -rad,
-          y: -rad,
+          y: rad,
         };
         p[1] = {
           x: -rad,
-          y: rad,
+          y: -rad,
         };
         p[2] = {
           x: rad,
-          y: -rad,
+          y: rad,
         };
+
         break;
 
       case 'bottomRight':
         p[0] = {
-          x: rad,
-          y: -rad,
+          x: -rad,
+          y: rad,
         };
         p[1] = {
           x: rad,
           y: rad,
         };
         p[2] = {
-          x: -rad,
+          x: rad,
           y: -rad,
         };
 
@@ -79,19 +81,19 @@ export function asteroidVertices(count, rad) {
   } else if (count == 4) {
     p[0] = {
       x: -rad,
-      y: -rad,
+      y: rad,
     };
     p[1] = {
       x: -rad,
-      y: rad,
+      y: -rad,
     };
     p[2] = {
       x: rad,
-      y: rad,
+      y: -rad,
     };
     p[3] = {
       x: rad,
-      y: -rad,
+      y: rad,
     };
   }
 
@@ -138,32 +140,18 @@ export function randomNumBetweenExcluding(min, max, exMin, exMax) {
 export function randomColor() {
   let texttheme = ['#E0533B', '#EBB54A', '#94ED6B'];
   let color = texttheme[Math.floor(Math.random() * texttheme.length)];
-  console.log(color);
 
   return color;
 }
 
-export function shipVertices(rad) {
+export function shipVertices(rad, rotation, position) {
   let p = [];
 
-  p[0] = {
-    x: 0,
-    y: -rad,
-  };
+  p[0] = { x: 0, y: rad };
 
-  p[1] = {
-    // x: Math.sqrt(rad ** 2 / 2),
-    // y: Math.sqrt(rad ** 2 / 2),
-    x: 20,
-    y: -20,
-  };
+  p[1] = { x: 20, y: -20 };
 
-  p[2] = {
-    x: -20,
-    y: 20,
-  };
-
-  console.log(Math.sqrt(rad ** 2 / 2));
+  p[2] = { x: -20, y: -20 };
 
   return p;
 }

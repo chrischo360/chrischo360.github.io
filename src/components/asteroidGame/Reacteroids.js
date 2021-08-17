@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import Ship from './Ship';
 import Asteroid from './Asteroid';
 import { randomNumBetween, randomNumBetweenExcluding } from './helpers';
-import { size } from 'lodash';
 
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
-  MoonIcon,
-} from '@chakra-ui/icons';
+  IoArrowBackOutline,
+  IoArrowForwardOutline,
+  IoArrowUpOutline,
+  IoNuclear,
+} from 'react-icons/io5';
 import { Flex, Spacer, IconButton } from '@chakra-ui/react';
 
 const KEY = {
@@ -45,7 +44,6 @@ export class Reacteroids extends Component {
       inGame: false,
       shipLoaded: false,
       colorMode: 'white',
-      mobile: false,
     };
     this.canvasRef = React.createRef(null);
     this.ship = [];
@@ -142,7 +140,6 @@ export class Reacteroids extends Component {
     context.scale(this.state.screen.ratio, this.state.screen.ratio);
 
     this.state.colorMode = this.props.colorMode;
-    this.state.mobile = this.props.mobile;
 
     if (this.state.colorMode == 'white') {
       context.fillStyle = '#FFFFFF';
@@ -190,6 +187,7 @@ export class Reacteroids extends Component {
   }
 
   startGame() {
+    console.log('Ratio', this.state.screen.ratio);
     this.setState({
       inGame: true,
       currentScore: 0,
@@ -236,7 +234,13 @@ export class Reacteroids extends Component {
     let ship = this.ship[0];
     for (let i = 0; i < howMany; i++) {
       let asteroid = new Asteroid({
-        size: Math.round(randomNumBetween(40, 80)),
+        size: Math.round(
+          randomNumBetween(
+            40,
+            80 /
+              (this.state.screen.ratio === 1 ? 1 : this.state.screen.ratio - 1),
+          ),
+        ),
         position: {
           x: randomNumBetweenExcluding(
             0,
@@ -257,26 +261,6 @@ export class Reacteroids extends Component {
       this.createObject(asteroid, 'asteroids');
     }
   }
-
-  // createMobileControls(boxWidth, boxHeight) {
-  //   const keys = ['left', 'right', 'up', ''];
-  //   const yPos = this.state.screen.height / 1.5;
-
-  //   for (let i = 0; i < keys.length; i++) {
-  //     let control = new Control({
-  //       boxSize: {
-  //         width: boxWidth * 16,
-  //         height: boxHeight * 16
-  //       },
-  //       boxPosition: {
-  //         x: 0,
-  //         y: 0,
-  //       },
-  //       key: keys[i]
-  //     });
-  //     this.createObject(control, 'controls');
-  //   }
-  // }
 
   createObject(item, group) {
     this[group].push(item);
@@ -455,8 +439,8 @@ export class Reacteroids extends Component {
 
     for (var i = 0; i < object.vertices.length; i++) {
       vertices[i] = {
-        x: object.position.x + vertices[i].x,
-        y: object.position.y + vertices[i].y,
+        x: (object.position.x + vertices[i].x) / this.state.screen.ratio,
+        y: (object.position.y + vertices[i].y) / this.state.screen.ratio,
       };
     }
 
@@ -468,8 +452,8 @@ export class Reacteroids extends Component {
 
     for (var i = 0; i < object.vertices.length; i++) {
       vertices[i] = {
-        x: object.position.x + object.vertices[i].x,
-        y: object.position.y + object.vertices[i].y,
+        x: (object.position.x + object.vertices[i].x) / this.state.screen.ratio,
+        y: (object.position.y + object.vertices[i].y) / this.state.screen.ratio,
       };
     }
 
@@ -493,6 +477,7 @@ export class Reacteroids extends Component {
     let instructions;
     let touchcontrols;
     let message;
+    let score;
 
     if (this.state.currentScore <= 0) {
       message = '0 points... So sad.';
@@ -504,18 +489,19 @@ export class Reacteroids extends Component {
 
     if (!this.state.inGame) {
       endgame = (
-        <div>
+        <div
+          style={{
+            textAlign: 'center',
+            width: '100%',
+            fontSize: '1.5rem',
+            // margin: '10px',
+          }}
+        >
           <button
             style={{
-              position: 'absolute',
-              color: this.state.colorMode == 'white' ? '#000000' : '#FFFFFF',
-              fontSize: '1.5rem',
-              padding: '10px 20px',
-              margin: '10px',
+              color: this.props.colorMode == 'white' ? '#000000' : '#FFFFFF',
               fontFamily: 'Karbon',
               cursor: 'pointer',
-              width: '100%',
-              textAlign: 'center',
             }}
             onClick={this.startGame.bind(this)}
           >
@@ -527,18 +513,21 @@ export class Reacteroids extends Component {
 
     if (!this.state.shipLoaded) {
       startgame = (
-        <div>
+        <div
+          style={{
+            textAlign: 'center',
+            width: '100%',
+            fontSize: '1.5rem',
+          }}
+        >
           <button
             style={{
-              position: 'absolute',
-              color: this.state.colorMode == 'white' ? '#000000' : '#FFFFFF',
-              fontSize: '1.5rem',
-              padding: '10px 20px',
-              margin: '10px',
+              // position: 'absolute',
+              // padding: '10px 20px',
+              color: this.props.colorMode == 'white' ? '#000000' : '#FFFFFF',
+              // margin: '10px',
               fontFamily: 'Karbon',
               cursor: 'pointer',
-              width: '100%',
-              textAlign: 'center',
             }}
             onClick={this.launchShip.bind(this)}
           >
@@ -548,14 +537,14 @@ export class Reacteroids extends Component {
       );
     }
 
-    if (this.state.mobile) {
+    if (this.props.mobile) {
       touchcontrols = (
         <Flex position="sticky">
           <IconButton
             id="left"
             size="lg"
             isRound
-            icon={<ArrowLeftIcon w={6} />}
+            icon={<IoArrowBackOutline w={6} />}
             onTouchStart={() => this.handleTouches(true, 'left')}
             onTouchMove={() => this.handleTouches(true, 'left')}
             onTouchCancel={() => this.handleTouches(false, 'left')}
@@ -566,7 +555,7 @@ export class Reacteroids extends Component {
             id="right"
             size="lg"
             isRound
-            icon={<ArrowRightIcon />}
+            icon={<IoArrowForwardOutline />}
             onTouchStart={() => this.handleTouches(true, 'right')}
             onTouchMove={() => this.handleTouches(true, 'right')}
             onTouchCancel={() => this.handleTouches(false, 'right')}
@@ -577,7 +566,7 @@ export class Reacteroids extends Component {
             id="up"
             size="lg"
             isRound
-            icon={<ArrowUpIcon />}
+            icon={<IoArrowUpOutline />}
             onTouchStart={() => this.handleTouches(true, 'up')}
             onTouchMove={() => this.handleTouches(true, 'up')}
             onTouchCancel={() => this.handleTouches(false, 'up')}
@@ -588,7 +577,7 @@ export class Reacteroids extends Component {
             id="fire"
             size="lg"
             isRound
-            icon={<MoonIcon />}
+            icon={<IoNuclear />}
             onTouchStart={() => this.handleTouches(true, 'fire')}
             onTouchMove={() => this.handleTouches(true, 'fire')}
             onTouchCancel={() => this.handleTouches(false, 'fire')}
@@ -598,7 +587,7 @@ export class Reacteroids extends Component {
       );
     }
 
-    if (this.state.shipLoaded & !this.state.mobile) {
+    if (this.state.shipLoaded & !this.props.mobile) {
       instructions = (
         <div
           style={{
@@ -623,23 +612,30 @@ export class Reacteroids extends Component {
       );
     }
 
-    return (
-      <div>
+    if (this.state.shipLoaded) {
+      score = (
         <div
           style={{
             fontSize: '1.5rem',
             width: '100%',
             textAlign: 'center',
+            // margin: '10px',
           }}
         >
           Score: {this.state.currentScore}
         </div>
+      );
+    }
+
+    return (
+      <div>
+        {score}
         {endgame}
         {startgame}
         <canvas
           ref={this.canvasRef}
           width={this.state.screen.width * this.state.screen.ratio}
-          height={this.state.screen.height * this.state.screen.ratio}
+          height={this.state.screen.height * 0.9 * this.state.screen.ratio}
           style={{
             width: '100%',
             height: '100%',
